@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "scheme": "acme",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "mini-game-app-mobile",
+    "slug": "mini-game-app-mobile"
+  }
+}
