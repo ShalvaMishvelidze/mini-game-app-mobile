@@ -1,4 +1,11 @@
-import { StyleSheet, View, TextInput, Text } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Text,
+  useWindowDimensions,
+  KeyboardAvoidingView,
+} from 'react-native';
 import React from 'react';
 import { BtnPrimary } from '../components/BtnPrimary';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +15,7 @@ import {
   reset,
 } from '../features/game/gameSlice';
 import colors from '../utils/colors';
+import { sizes } from '../utils/sizes';
 
 const StartGameScreen = () => {
   const { pickedNumber } = useSelector((state) => state.game);
@@ -23,8 +31,12 @@ const StartGameScreen = () => {
     }
   };
 
+  const { height } = useWindowDimensions();
+
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={[styles.container, { marginTop: height > 500 ? 100 : 20 }]}
+    >
       <Text style={styles.header}>Please enter a number</Text>
       <Text style={styles.note}>
         *note you can only enter values between 1 and 99
@@ -40,7 +52,7 @@ const StartGameScreen = () => {
         <BtnPrimary onPress={() => dispatch(reset())}>reset</BtnPrimary>
         <BtnPrimary onPress={handleSubmit}>confirm</BtnPrimary>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -48,10 +60,8 @@ export default StartGameScreen;
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    padding: 16,
-    marginTop: 100,
-    marginHorizontal: 24,
+    padding: sizes.large,
+    marginHorizontal: sizes.extraLarge,
     backgroundColor: colors.colPrimaryDarker,
     borderRadius: 8,
     elevation: 4,
@@ -62,11 +72,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    fontSize: 24,
+    fontSize: sizes.extraLarge,
     color: colors.colWhite,
   },
   note: {
-    fontSize: 12,
+    fontSize: sizes.medium,
     opacity: 0.5,
     color: colors.colWhite,
   },
@@ -74,17 +84,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     height: 50,
     width: 60,
-    fontSize: 32,
+    fontSize: sizes.superLarge,
     borderBottomColor: colors.colYellow,
     borderBottomWidth: 2,
     color: colors.colYellow,
-    marginVertical: 8,
+    marginVertical: sizes.small,
     fontWeight: 'bold',
     position: 'relative',
   },
   btnContainer: {
     flexDirection: 'row',
-    gap: 16,
-    marginTop: 8,
+    gap: sizes.large,
+    marginTop: sizes.small,
   },
 });

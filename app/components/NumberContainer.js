@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import colors from '../utils/colors';
+import { sizes } from '../utils/sizes';
 
 const NumberContainer = ({ children }) => {
   return (
@@ -16,15 +17,15 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 4,
     borderColor: colors.colYellow,
-    padding: 24,
+    padding: sizes.extraLarge,
     borderRadius: 8,
-    margin: 24,
+    margin: sizes.extraLarge,
     alignItems: 'center',
     justifyContent: 'center',
   },
   text: {
     color: colors.colYellow,
-    fontSize: 36,
+    fontSize: sizes.superLarge,
     fontWeight: 'bold',
   },
 });

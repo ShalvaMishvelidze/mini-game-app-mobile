@@ -1,5 +1,11 @@
 import { Title } from '../components/Title';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import React, { useEffect } from 'react';
 import {
   generateGuess,
@@ -13,6 +19,7 @@ import NumberContainer from '../components/NumberContainer';
 import { BtnPrimary } from '../components/BtnPrimary';
 import colors from '../utils/colors';
 import { Ionicons } from '@expo/vector-icons';
+import { sizes } from '../utils/sizes';
 
 const GameScreen = () => {
   const { computerNumber, lost, guessedNumbers, pickedNumber } = useSelector(
@@ -34,11 +41,21 @@ const GameScreen = () => {
     }
   }, [lost]);
 
+  const { width } = useWindowDimensions();
+
   return (
     <View style={styles.container}>
       <Title>Opponent's Guess</Title>
-      <NumberContainer>{computerNumber}</NumberContainer>
-      <View style={styles.card}>
+      {width < 500 && <NumberContainer>{computerNumber}</NumberContainer>}
+      <View
+        style={[
+          styles.card,
+          width > 500 && {
+            backgroundColor: 'transparent',
+            shadowColor: 'transparent',
+          },
+        ]}
+      >
         <Text style={styles.cardText}>Higher or lower?</Text>
         <View style={styles.btnContainer}>
           <BtnPrimary
@@ -46,21 +63,33 @@ const GameScreen = () => {
               dispatch(setComputerMax());
               dispatch(generateGuess(computerNumber));
             }}
+            height={40}
           >
-            <Ionicons name="md-remove" size={24} color={'#fff'} />
+            <Ionicons name="md-remove" size={sizes.extraLarge} color={'#fff'} />
           </BtnPrimary>
+          {width > 500 && <NumberContainer>{computerNumber}</NumberContainer>}
           <BtnPrimary
             onPress={() => {
               dispatch(setComputerMin());
               dispatch(generateGuess(computerNumber));
             }}
+            height={40}
           >
-            <Ionicons name="md-add" size={24} color={'#fff'} />
+            <Ionicons name="md-add" size={sizes.extraLarge} color={'#fff'} />
           </BtnPrimary>
         </View>
       </View>
       <View style={styles.listContainer}>
-        <FlatList
+        {guessedNumbers.map((item, index) => {
+          return (
+            <View key={index} style={styles.itemContainer}>
+              <Text style={styles.item}>
+                Round {guessedNumbers.length - index}: {item}
+              </Text>
+            </View>
+          );
+        })}
+        {/* <FlatList
           contentContainerStyle={styles.list}
           data={guessedNumbers}
           renderItem={({ item, index }) => {
@@ -73,7 +102,7 @@ const GameScreen = () => {
             );
           }}
           keyExtractor={(_, index) => index}
-        />
+        /> */}
       </View>
     </View>
   );
@@ -84,12 +113,13 @@ export default GameScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+    padding: sizes.extraLarge,
+    alignItems: 'center',
   },
   card: {
-    padding: 16,
+    padding: sizes.large,
     backgroundColor: colors.colPrimaryDarker,
-    borderRadius: 8,
+    borderRadius: sizes.small,
     elevation: 4,
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 2 },
@@ -98,35 +128,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardText: {
-    fontSize: 32,
-    padding: 24,
+    fontSize: sizes.superLarge,
+    padding: sizes.extraLarge,
     color: colors.colYellow,
   },
   btnContainer: {
     flexDirection: 'row',
-    gap: 16,
-    marginTop: 8,
-    marginBottom: 16,
+    gap: sizes.large,
+    marginTop: sizes.small,
+    marginBottom: sizes.large,
+    alignItems: 'center',
   },
   listContainer: {
     flex: 1,
   },
   list: {
-    paddingTop: 24,
+    paddingTop: sizes.extraLarge,
   },
   itemContainer: {
     margin: 4,
     backgroundColor: colors.colYellow,
     padding: 8,
-    borderRadius: 12,
-    width: '70%',
+    borderRadius: sizes.medium,
+    minWidth: '75%',
     borderWidth: 2,
     borderColor: colors.colPrimaryDark,
     alignSelf: 'center',
   },
   item: {
     color: colors.colWhite,
-    fontSize: 24,
+    fontSize: sizes.extraLarge,
     fontWeight: 'bold',
     textAlign: 'center',
   },

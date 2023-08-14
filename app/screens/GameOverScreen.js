@@ -1,14 +1,18 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Title } from '../components/Title';
 import colors from '../utils/colors';
 import { BtnPrimary } from '../components/BtnPrimary';
 import { changePage, reset } from '../features/game/gameSlice';
+import { sizes } from '../utils/sizes';
+
+const { width } = Dimensions.get('window');
 
 const GameOverScreen = () => {
   const dispatch = useDispatch();
   const { numberOfGuesses, pickedNumber } = useSelector((state) => state.game);
+
   return (
     <View style={styles.container}>
       <Title>GAME OVER!</Title>
@@ -30,7 +34,7 @@ const GameOverScreen = () => {
             dispatch(reset());
             dispatch(changePage('startGameScreen'));
           }}
-          fontSize={24}
+          fontSize={sizes.extraLarge}
           color={colors.colYellow}
         >
           New Game
@@ -45,18 +49,18 @@ export default GameOverScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+    padding: sizes.extraLarge,
     alignItems: 'center',
     justifyContent: 'center',
   },
   imgContainer: {
     borderRadius: 150,
-    width: 300,
-    height: 300,
+    width: width < 320 ? 180 : 300,
+    height: width < 320 ? 180 : 300,
     overflow: 'hidden',
     borderWidth: 3,
     borderColor: colors.colPrimaryDarker,
-    margin: 36,
+    margin: sizes.superLarge,
   },
   image: {
     width: '100%',
@@ -64,7 +68,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: colors.colWhite,
-    fontSize: 24,
+    fontSize: sizes.extraLarge,
     textAlign: 'center',
   },
   highlightedText: {
@@ -73,7 +77,7 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     flexDirection: 'row',
-    marginTop: 24,
+    marginTop: sizes.extraLarge,
     width: '70%',
   },
 });

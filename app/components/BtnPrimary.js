@@ -1,15 +1,24 @@
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import colors from '../utils/colors';
+import { sizes } from '../utils/sizes';
 
 const BtnPrimary = ({
   children,
   onPress = () => console.log("I've been clicked!!!"),
   color = colors.colWhite,
   fontSize = 14,
+  height = '100%',
 }) => {
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        borderRadius: 1000,
+        overflow: 'hidden',
+        flex: 1,
+        height,
+      }}
+    >
       <Pressable
         style={
           Platform.OS === 'ios'
@@ -42,16 +51,11 @@ const BtnPrimary = ({
 export { BtnPrimary };
 
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 1000,
-    overflow: 'hidden',
-    flex: 1,
-  },
   pressable: {
     backgroundColor: colors.colPrimary,
     alignSelf: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingHorizontal: sizes.large,
+    paddingVertical: sizes.small,
     justifyContent: 'center',
     elevation: 2,
     width: '100%',
