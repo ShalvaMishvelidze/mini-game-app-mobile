@@ -1,12 +1,13 @@
 import { StyleSheet, View, TextInput, Text } from 'react-native';
 import React from 'react';
-import BtnPrimary from '../components/BtnPrimary';
+import { BtnPrimary } from '../components/BtnPrimary';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setEnteredNumber,
   changePage,
-  resetEnteredNumber,
+  reset,
 } from '../features/game/gameSlice';
+import colors from '../utils/colors';
 
 const StartGameScreen = () => {
   const { pickedNumber } = useSelector((state) => state.game);
@@ -17,7 +18,9 @@ const StartGameScreen = () => {
   };
 
   const handleSubmit = () => {
-    dispatch(changePage('gameScreen'));
+    if (pickedNumber) {
+      dispatch(changePage('gameScreen'));
+    }
   };
 
   return (
@@ -34,11 +37,8 @@ const StartGameScreen = () => {
         value={pickedNumber}
       />
       <View style={styles.btnContainer}>
-        <BtnPrimary
-          onPress={() => dispatch(resetEnteredNumber())}
-          text={'reset'}
-        />
-        <BtnPrimary onPress={handleSubmit} text={'confirm'} />
+        <BtnPrimary onPress={() => dispatch(reset())}>reset</BtnPrimary>
+        <BtnPrimary onPress={handleSubmit}>confirm</BtnPrimary>
       </View>
     </View>
   );
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginTop: 100,
     marginHorizontal: 24,
-    backgroundColor: '#3b021f',
+    backgroundColor: colors.colPrimaryDarker,
     borderRadius: 8,
     elevation: 4,
     shadowColor: 'black',
@@ -63,19 +63,21 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 24,
+    color: colors.colWhite,
   },
   note: {
     fontSize: 12,
     opacity: 0.5,
+    color: colors.colWhite,
   },
   input: {
     textAlign: 'center',
     height: 50,
     width: 60,
     fontSize: 32,
-    borderBottomColor: '#ddb52f',
+    borderBottomColor: colors.colYellow,
     borderBottomWidth: 2,
-    color: '#ddb52f',
+    color: colors.colYellow,
     marginVertical: 8,
     fontWeight: 'bold',
     position: 'relative',

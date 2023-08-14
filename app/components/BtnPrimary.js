@@ -1,54 +1,62 @@
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import colors from '../utils/colors';
 
 const BtnPrimary = ({
-	text = 'click me',
-	onPress = () => console.log("I've been clicked!!!"),
+  children,
+  onPress = () => console.log("I've been clicked!!!"),
+  color = colors.colWhite,
+  fontSize = 14,
 }) => {
-	return (
-		<View style={styles.container}>
-			<Pressable
-				style={
-					Platform.OS === 'ios'
-						? ({ pressed }) => {
-								return pressed
-									? [styles.pressable, styles.pressed]
-									: styles.pressable;
-						  }
-						: styles.pressable
-				}
-				onPress={onPress}
-				android_ripple={{ color: '#640233' }}
-			>
-				<Text style={styles.text}>{text}</Text>
-			</Pressable>
-		</View>
-	);
+  return (
+    <View style={styles.container}>
+      <Pressable
+        style={
+          Platform.OS === 'ios'
+            ? ({ pressed }) => {
+                return pressed
+                  ? [styles.pressable, styles.pressed]
+                  : styles.pressable;
+              }
+            : styles.pressable
+        }
+        onPress={onPress}
+        android_ripple={{ color: colors.colPrimaryDark }}
+      >
+        <Text
+          style={{
+            textAlign: 'center',
+            textTransform: 'uppercase',
+            color,
+            fontSize,
+            fontWeight: 'bold',
+          }}
+        >
+          {children}
+        </Text>
+      </Pressable>
+    </View>
+  );
 };
 
-export default BtnPrimary;
+export { BtnPrimary };
 
 const styles = StyleSheet.create({
-	container: {
-		borderRadius: 1000,
-		overflow: 'hidden',
-		flex: 1,
-	},
-	pressable: {
-		backgroundColor: '#72063c',
-		alignSelf: 'center',
-		paddingHorizontal: 16,
-		paddingVertical: 8,
-		justifyContent: 'center',
-		elevation: 2,
-		width: '100%',
-	},
-	text: {
-		textAlign: 'center',
-		textTransform: 'uppercase',
-		color: '#fff',
-	},
-	pressed: {
-		opacity: 0.75,
-	},
+  container: {
+    borderRadius: 1000,
+    overflow: 'hidden',
+    flex: 1,
+  },
+  pressable: {
+    backgroundColor: colors.colPrimary,
+    alignSelf: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    justifyContent: 'center',
+    elevation: 2,
+    width: '100%',
+  },
+  pressed: {
+    opacity: 0.75,
+  },
 });
