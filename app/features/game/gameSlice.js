@@ -10,6 +10,7 @@ const initialState = {
   lost: false,
   numberOfGuesses: 0,
   won: false,
+  guessedNumbers: [],
 };
 
 const gameSlice = createSlice({
@@ -34,6 +35,7 @@ const gameSlice = createSlice({
       state.numberOfGuesses = 0;
       state.lost = false;
       state.won = false;
+      state.guessedNumbers = [];
     },
     generateGuess: (state, { payload }) => {
       const randomNum =
@@ -48,12 +50,14 @@ const gameSlice = createSlice({
       }
       state.numberOfGuesses++;
       state.lost = false;
+      state.guessedNumbers.unshift(state.computerNumber);
     },
     setComputerMin: (state) => {
       if (state.computerNumber > state.pickedNumber) {
         Alert.alert('Warning!!!', 'Liar,Liar Pants on Fire', [
           { text: 'Sowwy!', style: 'cancel' },
         ]);
+        state.computerMax = state.computerNumber;
       } else {
         state.computerMin = state.computerNumber + 1;
       }
@@ -63,6 +67,7 @@ const gameSlice = createSlice({
         Alert.alert('Warning!!!', 'Liar,Liar Pants on Fire', [
           { text: 'Sowwy!', style: 'cancel' },
         ]);
+        state.computerMin = state.computerNumber + 1;
       } else {
         state.computerMax = state.computerNumber;
       }

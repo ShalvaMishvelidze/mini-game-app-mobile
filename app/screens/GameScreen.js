@@ -1,14 +1,12 @@
 import { Title } from '../components/Title';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect } from 'react';
 import {
-  changePage,
   generateGuess,
   setComputerMin,
   setComputerMax,
   checkComputersGuess,
   youLost,
-  youWon,
 } from '../features/game/gameSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import NumberContainer from '../components/NumberContainer';
@@ -17,7 +15,7 @@ import colors from '../utils/colors';
 import { Ionicons } from '@expo/vector-icons';
 
 const GameScreen = () => {
-  const { computerNumber, lost, numberOfGuesses, pickedNumber } = useSelector(
+  const { computerNumber, lost, guessedNumbers, pickedNumber } = useSelector(
     (state) => state.game
   );
   const dispatch = useDispatch();
@@ -38,14 +36,6 @@ const GameScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Button
-        title="start game screen"
-        onPress={() => dispatch(changePage('startGameScreen'))}
-      />
-      <Button
-        title="game over screen"
-        onPress={() => dispatch(changePage('gameOverScreen'))}
-      />
       <Title>Opponent's Guess</Title>
       <NumberContainer>{computerNumber}</NumberContainer>
       <View style={styles.card}>
@@ -69,7 +59,25 @@ const GameScreen = () => {
           </BtnPrimary>
         </View>
       </View>
-      <View>{/* log rounds */}</View>
+      {/* <View>
+        {guessedNumbers.map((num, index) => {
+          return <Text key={index}>{num}</Text>;
+        })}
+      </View> */}
+      <FlatList
+        contentContainerStyle={styles.list}
+        data={guessedNumbers}
+        renderItem={({ item, index }) => {
+          return (
+            <View style={styles.itemContainer}>
+              <Text style={styles.item}>
+                Round {guessedNumbers.length - index}: {item}
+              </Text>
+            </View>
+          );
+        }}
+        keyExtractor={(_, index) => index}
+      />
     </View>
   );
 };
@@ -102,5 +110,24 @@ const styles = StyleSheet.create({
     gap: 16,
     marginTop: 8,
     marginBottom: 16,
+  },
+  list: {
+    marginTop: 24,
+  },
+  itemContainer: {
+    margin: 4,
+    backgroundColor: colors.colYellow,
+    padding: 8,
+    borderRadius: 12,
+    width: '70%',
+    borderWidth: 2,
+    borderColor: colors.colPrimaryDark,
+    alignSelf: 'center',
+  },
+  item: {
+    color: colors.colWhite,
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
