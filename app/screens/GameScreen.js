@@ -59,25 +59,22 @@ const GameScreen = () => {
           </BtnPrimary>
         </View>
       </View>
-      {/* <View>
-        {guessedNumbers.map((num, index) => {
-          return <Text key={index}>{num}</Text>;
-        })}
-      </View> */}
-      <FlatList
-        contentContainerStyle={styles.list}
-        data={guessedNumbers}
-        renderItem={({ item, index }) => {
-          return (
-            <View style={styles.itemContainer}>
-              <Text style={styles.item}>
-                Round {guessedNumbers.length - index}: {item}
-              </Text>
-            </View>
-          );
-        }}
-        keyExtractor={(_, index) => index}
-      />
+      <View style={styles.listContainer}>
+        <FlatList
+          contentContainerStyle={styles.list}
+          data={guessedNumbers}
+          renderItem={({ item, index }) => {
+            return (
+              <View style={styles.itemContainer}>
+                <Text style={styles.item}>
+                  Round {guessedNumbers.length - index}: {item}
+                </Text>
+              </View>
+            );
+          }}
+          keyExtractor={(_, index) => index}
+        />
+      </View>
     </View>
   );
 };
@@ -111,8 +108,11 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 16,
   },
+  listContainer: {
+    flex: 1,
+  },
   list: {
-    marginTop: 24,
+    paddingTop: 24,
   },
   itemContainer: {
     margin: 4,
